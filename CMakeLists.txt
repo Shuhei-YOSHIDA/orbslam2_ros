@@ -9,6 +9,7 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  cv_bridge
 )
 
 ## System dependencies are found with CMake's conventions
@@ -149,6 +150,7 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
+  libORB_SLAM2.so
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
   ${Pangolin_LIBRARIES}
