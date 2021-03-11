@@ -31,7 +31,6 @@ protected:
   void publishCurrentPose(const Eigen::Affine3d& T, const std_msgs::Header& header);
   void publishCurrentPoseAsTF(const ros::TimerEvent& event);
 
-  //void convertORBSLAMPoseToEigen(const cv::Mat& T_cv, Eigen::Isometry3d& T);
   void convertORBSLAMPoseToEigen(const cv::Mat& T_cv, Eigen::Affine3d& T);
 
   ros::NodeHandle _nh;
@@ -41,10 +40,7 @@ protected:
   tf2_ros::TransformBroadcaster _tf_broadcaster;
   ros::Timer _tf_timer;
 
-  //geometry_msgs::TransformStamped _world_T_camera;
-  //Eigen::Matrix4d _world_T_camera;
-  //Eigen::Isometry3d _world_T_camera;
-  Eigen::Affine3d _world_T_camera;
+  Eigen::Affine3d _camera_T_world;
 
   // Parameters
   std::string _vocabulary_file_path;

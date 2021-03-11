@@ -4,7 +4,6 @@
 
 #include "orbslam2_ros/interface_mono.h"
 #include "orbslam2_ros/interface.h"
-#include "ros/node_handle.h"
 #include <cv_bridge/cv_bridge.h>
 
 namespace orbslam2_ros
@@ -40,17 +39,16 @@ void ORBSLAM2InterfaceMono::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     return;
   }
 
-  // Handling the iamge to ORB_SLAM for tracking
+  // Handling the iamge to ORB_SLAM for tracking(T_C_W is camera pose from world coord?)
   cv::Mat T_C_W_opencv = _slam_system->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
   // If Tracking is successful, update camera's pose
   if (!T_C_W_opencv.empty())
   {
-  //void convertORBSLAMPoseToEigen(const cv::Mat& T_cv, Eigen::Affine3d& T);
     Eigen::Affine3d T_C_W, T_W_C;
     convertORBSLAMPoseToEigen(T_C_W_opencv, T_C_W);
     T_W_C = T_C_W.inverse();
     publishCurrentPose(T_W_C, msg->header); ///@note from camera to world?
-    _world_T_camera = T_W_C; ///@todo inversed?
+    _camera_T_world = T_W_C;
   }
 }
 

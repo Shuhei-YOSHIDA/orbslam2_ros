@@ -41,7 +41,7 @@ int main(int argc, char** argv)
   // Set parameters
   std::string interface_type = "mono";
   nh_private.getParam("interface_type", interface_type);
-  bool visualization = false;
+  bool visualization = true;
   nh_private.getParam("visualization", visualization);
 
   // Creating the interface object to do the work
@@ -49,7 +49,9 @@ int main(int argc, char** argv)
     create_interface(interface_type, nh, nh_private, visualization);
 
   // Spinning
-  ros::spin();
+  ros::AsyncSpinner spinner(0); // 0:All cpu thread
+  spinner.start();
+  ros::waitForShutdown();
 
   return 0;
 }
