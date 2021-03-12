@@ -44,6 +44,7 @@ void ORBSLAM2InterfaceMono::imageCallback(const sensor_msgs::ImageConstPtr& msg)
   // If Tracking is successful, update camera's pose
   if (!T_C_W_opencv.empty())
   {
+    ROS_DEBUG("ORBSLAM2 mono image is tracked");
     Eigen::Affine3d T_C_W, T_W_C;
     convertORBSLAMPoseToEigen(T_C_W_opencv, T_C_W);
     T_W_C = T_C_W.inverse();

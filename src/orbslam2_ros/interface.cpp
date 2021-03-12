@@ -78,7 +78,6 @@ void ORBSLAM2Interface::publishCurrentPoseAsTF(const ros::TimerEvent& event)
   msg.child_frame_id = _child_frame_id;
   tf::transformEigenToMsg(_camera_T_world, msg.transform);
 
-  cout << "maptf:" << msg.transform.rotation << endl; // check
   _tf_broadcaster.sendTransform(msg);
 }
 
@@ -93,7 +92,6 @@ void ORBSLAM2Interface::convertORBSLAMPoseToEigen(const cv::Mat& T_cv,
   Eigen::Matrix3d R_unnormalized = T_eigen_d.block<3, 3>(0, 0);
   Eigen::AngleAxisd aa(R_unnormalized);
   Eigen::Matrix3d R = aa.toRotationMatrix();
-  cout << "determinant:" <<  R.determinant() << endl; // check
   //Eigen::Quaterniond q(R);
   Eigen::Vector3d t(T_eigen_d.block<3, 1>(0, 3));
 

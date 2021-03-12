@@ -1,0 +1,9 @@
+# orbslam2_ros/Data is linked to sample data directory
+#vocabulary_file_path: "package://orbslam2_ros/Data/Vocabulary/ORBvoc.txt"
+#setting_file_path: "package://orbslam2_ros/Data/Example/Monocular/TUM1.yaml"
+vocabulary_file_path: "/root/GIT/ROSWS/sim_ws/src/orbslam2_ros/Data/Vocabulary/ORBvoc.txt"
+setting_file_path: "/root/GIT/ROSWS/sim_ws/src/orbslam2_ros/Data/Example/Monocular/TUM1.yaml"
+frame_id: "openni_rgb_optical_frame"
+child_frame_id: "map"
+interface_type: "mono"
+visualization: "true"
