@@ -10,6 +10,11 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   cv_bridge
+  geometry_msgs
+  sensor_msgs
+  tf2
+  tf2_ros
+  eigen_conversions
 )
 
 ## System dependencies are found with CMake's conventions
@@ -117,26 +122,35 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
   #  /usr/local/include/ORB_SLAM2/Thirdparty
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/orbslam2_ros.cpp
-# )
+add_library(${PROJECT_NAME}
+  src/${PROJECT_NAME}/interface.cpp
+  src/${PROJECT_NAME}/interface_mono.cpp
+)
+
+target_link_libraries(${PROJECT_NAME}
+  libORB_SLAM2.so
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${Pangolin_LIBRARIES}
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME}_node src/orbslam2_node.cpp)
+add_executable(${PROJECT_NAME}_mono_node src/orbslam2_mono_node.cpp)
+add_executable(${PROJECT_NAME}_node src/orbslam2_ros_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -146,11 +160,18 @@ add_executable(${PROJECT_NAME}_node src/orbslam2_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
+add_dependencies(${PROJECT_NAME}_mono_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(${PROJECT_NAME}_mono_node
   libORB_SLAM2.so
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${Pangolin_LIBRARIES}
+)
+target_link_libraries(${PROJECT_NAME}_node
+  ${PROJECT_NAME}
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
   ${Pangolin_LIBRARIES}
