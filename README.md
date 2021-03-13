@@ -14,3 +14,8 @@ You can try this package by using a launch file;`freiburg1_xyz.launch`.
 $ rosbag check rgbd_dataset_freiburg1_xyz.bag -g rule.bmr
 $ rosbag fix rgbd_dataset_freiburg1_xyz.bag new.bag rule.bmr
 ```
+
+## License
+The source code is released under a [GPLv3 license](https://github.com/raulmur/ORB_SLAM2/blob/master/License-gpl.txt) as is the underlying library [ORB_SLAM2](https://github.com/raulmur/ORB_SLAM2).
+
+And this repository is based on [ethz-asl/orb_slam_2_ros](https://github.com/ethz-asl/orb_slam_2_ros).
