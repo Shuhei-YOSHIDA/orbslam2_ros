@@ -49,9 +49,10 @@ int main(int argc, char** argv)
     create_interface(interface_type, nh, nh_private, visualization);
 
   // Spinning
-  ros::AsyncSpinner spinner(0); // 0:All cpu thread
-  spinner.start();
-  ros::waitForShutdown();
+  ros::spin();
+  //ros::AsyncSpinner spinner(0); // 0:All cpu thread
+  //spinner.start();
+  //ros::waitForShutdown();
 
   return 0;
 }
