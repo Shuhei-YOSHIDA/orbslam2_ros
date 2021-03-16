@@ -34,6 +34,10 @@ protected:
   std::shared_ptr<message_filters::Subscriber<sensor_msgs::Image>> _right_sub;
   std::shared_ptr<message_filters::Synchronizer<stereo_sync_pol>> _sync;
 
+  // Undistortion in this class
+  bool _do_rectify;
+  cv::Mat _M1l, _M2l;
+  cv::Mat _M1r, _M2r;
 };
 
 } // namespace orbslam2_ros

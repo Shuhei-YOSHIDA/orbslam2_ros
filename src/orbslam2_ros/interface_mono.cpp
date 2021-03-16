@@ -16,6 +16,7 @@ ORBSLAM2InterfaceMono::ORBSLAM2InterfaceMono(
   : ORBSLAM2Interface(nh, nh_private)
 {
   subscribeToTopics();
+  ROS_INFO("Wait for ORB_SLAM2:System to wake up...");
   _slam_system = std::shared_ptr<ORB_SLAM2::System>(
         new ORB_SLAM2::System(_vocabulary_file_path, _setting_file_path,
                               ORB_SLAM2::System::MONOCULAR, visualization));

@@ -2,8 +2,10 @@
 #vocabulary_file_path: "package://orbslam2_ros/Data/Vocabulary/ORBvoc.txt"
 #setting_file_path: "package://orbslam2_ros/Data/Example/Monocular/TUM1.yaml"
 vocabulary_file_path: "/root/GIT/ROSWS/sim_ws/src/orbslam2_ros/Data/Vocabulary/ORBvoc.txt"
-setting_file_path: "/root/GIT/ROSWS/sim_ws/src/orbslam2_ros/Data/Example/Monocular/TUM1.yaml"
-frame_id: "openni_rgb_optical_frame"
+setting_file_path: "/root/GIT/ROSWS/sim_ws/src/orbslam2_ros/Data/Example/Stereo/EuRoC.yaml"
+frame_id: "cam0"
 child_frame_id: "map"
-interface_type: "mono"
+interface_type: "stereo"
 visualization: true
+# Load rectify-info from file specified by setting_file_path
+do_rectify: true

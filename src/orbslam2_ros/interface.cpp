@@ -40,9 +40,9 @@ void ORBSLAM2Interface::getParametersFromROS()
 
   _frame_id = "cam0";
   _child_frame_id = "world";
-  if (_nh_private.getParam("frame_id", _frame_id))
+  if (!_nh_private.getParam("frame_id", _frame_id))
     ROS_WARN("Could not read parameter ~frame_id");
-  if (_nh_private.getParam("child_frame_id", _child_frame_id))
+  if (!_nh_private.getParam("child_frame_id", _child_frame_id))
     ROS_WARN("Could not read parameter ~child_frame_id");
 
   ROS_INFO_STREAM("Parameters for ORB_SLAM2:" << endl

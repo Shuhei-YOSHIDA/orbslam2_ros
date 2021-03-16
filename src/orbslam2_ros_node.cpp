@@ -4,6 +4,7 @@
 
 #include "orbslam2_ros/interface.h"
 #include "orbslam2_ros/interface_mono.h"
+#include "orbslam2_ros/interface_stereo.h"
 
 // A factory method for creating an interface
 std::unique_ptr<orbslam2_ros::ORBSLAM2Interface>
@@ -18,9 +19,8 @@ create_interface(std::string interface_type, const ros::NodeHandle &nh,
   }
   else if (interface_type == "stereo")
   {
-    ROS_FATAL("interface type[stereo] is not implemented now. Must be mono");
-    ros::shutdown();
-    exit(1);
+    interface = std::unique_ptr<orbslam2_ros::ORBSLAM2Interface>(
+        new orbslam2_ros::ORBSLAM2InterfaceStereo(nh, nh_private, visualization));
   }
   else
   {
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
   // Set parameters
   std::string interface_type = "mono";
   nh_private.getParam("interface_type", interface_type);
-  bool visualization = true;
+  bool visualization = false;
   nh_private.getParam("visualization", visualization);
 
   // Creating the interface object to do the work
