@@ -39,7 +39,7 @@ void ORBSLAM2InterfaceMono::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     return;
   }
 
-  // Handling the iamge to ORB_SLAM for tracking(T_C_W is camera pose from world coord?)
+  // Handling the image to ORB_SLAM for tracking(T_C_W is camera pose from world(initial pose) coord)
   cv::Mat T_C_W_opencv = _slam_system->TrackMonocular(cv_ptr->image, cv_ptr->header.stamp.toSec());
   // If Tracking is successful, update camera's pose
   if (!T_C_W_opencv.empty())

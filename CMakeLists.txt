@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2
   tf2_ros
   eigen_conversions
+  message_filters
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,8 +110,8 @@ find_package(Pangolin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES orbslam2_ros
+  INCLUDE_DIRS include
+  LIBRARIES orbslam2_ros
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -132,6 +133,7 @@ include_directories(
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/interface.cpp
   src/${PROJECT_NAME}/interface_mono.cpp
+  src/${PROJECT_NAME}/interface_stereo.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
