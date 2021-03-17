@@ -23,6 +23,8 @@ You can also try stereo-camera SLAM of this package by using a launch file;`V1_0
 * Fix `vocaburaly_file_path` and `setting_file_path` in `params/param_V1_01_easy_example.yaml`
 * `rosbag play --clock --pause V1_01_easy.bag`
 
+## Sample for RGB-D camera
+
 ## License
 The source code is released under a [GPLv3 license](https://github.com/raulmur/ORB_SLAM2/blob/master/License-gpl.txt) as is the underlying library [ORB_SLAM2](https://github.com/raulmur/ORB_SLAM2).
 

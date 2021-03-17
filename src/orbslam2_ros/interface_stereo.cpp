@@ -6,9 +6,6 @@
 #include "orbslam2_ros/interface.h"
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
-#include <opencv2/imgproc.hpp>
-//#include <opencv2/core/persistence.hpp>
-//#include <opencv2/imgproc.hpp>
 
 namespace orbslam2_ros
 {

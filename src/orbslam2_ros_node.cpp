@@ -5,6 +5,7 @@
 #include "orbslam2_ros/interface.h"
 #include "orbslam2_ros/interface_mono.h"
 #include "orbslam2_ros/interface_stereo.h"
+#include "orbslam2_ros/interface_rgbd.h"
 
 // A factory method for creating an interface
 std::unique_ptr<orbslam2_ros::ORBSLAM2Interface>
@@ -21,6 +22,11 @@ create_interface(std::string interface_type, const ros::NodeHandle &nh,
   {
     interface = std::unique_ptr<orbslam2_ros::ORBSLAM2Interface>(
         new orbslam2_ros::ORBSLAM2InterfaceStereo(nh, nh_private, visualization));
+  }
+  else if (interface_type == "rgbd")
+  {
+    interface = std::unique_ptr<orbslam2_ros::ORBSLAM2Interface>(
+        new orbslam2_ros::ORBSLAM2InterfaceRGBD(nh, nh_private, visualization));
   }
   else
   {

@@ -134,6 +134,7 @@ add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/interface.cpp
   src/${PROJECT_NAME}/interface_mono.cpp
   src/${PROJECT_NAME}/interface_stereo.cpp
+  src/${PROJECT_NAME}/interface_rgbd.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
