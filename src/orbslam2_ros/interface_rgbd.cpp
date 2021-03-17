@@ -30,7 +30,7 @@ void ORBSLAM2InterfaceRGBD::subscribeToTopics()
   _rgb_sub = std::make_shared<message_filters::Subscriber<sensor_msgs::Image>>(
       _nh, "camera/rgb/image_raw", 1);
   _depth_sub = std::make_shared<message_filters::Subscriber<sensor_msgs::Image>>(
-      _nh, "camera/depth/image_raw", 1);
+      _nh, "camera/depth_registered/image_raw", 1);
   _sync = std::make_shared<message_filters::Synchronizer<rgbd_sync_pol>>(
       rgbd_sync_pol(10), *_rgb_sub, *_depth_sub);
 
