@@ -3,6 +3,7 @@
  */
 
 #include "orbslam2_ros/interface.h"
+#include <ORB_SLAM2/System.h>
 #include <eigen_conversions/eigen_msg.h>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
@@ -11,8 +12,9 @@ namespace orbslam2_ros
 {
 
 ORBSLAM2Interface::ORBSLAM2Interface(const ros::NodeHandle& nh,
-                                     const ros::NodeHandle& nh_private)
-  : _nh(nh), _nh_private(nh_private)
+                                     const ros::NodeHandle& nh_private,
+                                     ORB_SLAM2::System::eSensor sensor_type)
+  : _nh(nh), _nh_private(nh_private), _sensor_type(sensor_type)
 {
   // initialize
   advertiseTopics();

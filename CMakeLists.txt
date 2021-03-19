@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   eigen_conversions
   message_filters
+  orbslam2_ros_msgs
 )
 
 ## System dependencies are found with CMake's conventions

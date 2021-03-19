@@ -20,7 +20,8 @@ class ORBSLAM2Interface
 {
 public:
   ORBSLAM2Interface(const ros::NodeHandle& nh,
-                    const ros::NodeHandle& nh_private);
+                    const ros::NodeHandle& nh_private,
+                    ORB_SLAM2::System::eSensor sensor_type);
 
 protected:
   void advertiseTopics();
@@ -51,6 +52,8 @@ protected:
 
   // The ORB_SLAM2 system
   std::shared_ptr<ORB_SLAM2::System> _slam_system;
+
+  const ORB_SLAM2::System::eSensor _sensor_type;
 };
 
 }

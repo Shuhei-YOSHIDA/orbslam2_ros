@@ -16,13 +16,13 @@ ORBSLAM2InterfaceRGBD::ORBSLAM2InterfaceRGBD(
     const ros::NodeHandle& nh,
     const ros::NodeHandle& nh_private,
     const bool visualization)
-  : ORBSLAM2Interface(nh, nh_private)
+  : ORBSLAM2Interface(nh, nh_private, ORB_SLAM2::System::RGBD)
 {
   subscribeToTopics();
   ROS_INFO("Wait for ORB_SLAM2:System to wake up...");
   _slam_system = std::shared_ptr<ORB_SLAM2::System>(
       new ORB_SLAM2::System(_vocabulary_file_path, _setting_file_path,
-                            ORB_SLAM2::System::RGBD, visualization));
+                            _sensor_type, visualization));
 }
 
 void ORBSLAM2InterfaceRGBD::subscribeToTopics()
