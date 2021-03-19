@@ -129,6 +129,8 @@ include_directories(
   #  /usr/local/include/ORB_SLAM2/Thirdparty
 )
 
+link_directories(/usr/local/lib/ORB_SLAM2)
+
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/${PROJECT_NAME}/interface.cpp

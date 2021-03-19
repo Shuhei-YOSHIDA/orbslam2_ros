@@ -4,6 +4,11 @@ orbslam2_ros
 Use [Forked Repository](https://github.com/Shuhei-YOSHIDA/ORB_SLAM2) of raulmur/ORB_SLAM2,
 and execute `make install` in `ORB_SLAM2/build/`, `ORB_SLAM2/ThirdParty/DBoW2/build/`, and `ORB_SLAM2/ThirdParty/g2o/build`.
 
+In addition, set environment variable by adding a code into your `.bashrc`.
+```bash
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/ORB_SLAM2
+```
+
 ## Sample for mono-camera
 You can try mono-camera SLAM of this package by using a launch file;`freiburg1_xyz.launch`.
 * Download rosbag of TUM dataset 'fr1/xyz' from [here](https://vision.in.tum.de/data/datasets/rgbd-dataset/download#)
