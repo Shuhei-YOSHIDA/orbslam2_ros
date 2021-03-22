@@ -40,7 +40,7 @@ void ORBSLAM2Interface::advertiseServices()
   _switch_mode_srv = _nh_private.advertiseService(
       "switch_mode", &ORBSLAM2Interface::switchModeService, this);
   _save_trajectory_srv = _nh_private.advertiseService(
-      "save_trajectory_or_kf", &ORBSLAM2Interface::saveTrajectoryService, this);
+      "save_trajectory_and_kf", &ORBSLAM2Interface::saveTrajectoryService, this);
 }
 
 void ORBSLAM2Interface::getParametersFromROS()
