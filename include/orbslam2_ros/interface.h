@@ -11,6 +11,9 @@
 #include <ORB_SLAM2/System.h>
 #include <Eigen/Dense>
 #include <opencv2/core/core.hpp>
+#include "orbslam2_ros_msgs/Reset.h"
+#include "orbslam2_ros_msgs/SwitchMode.h"
+#include "orbslam2_ros_msgs/SaveTrajectory.h"
 
 
 namespace orbslam2_ros
@@ -25,6 +28,7 @@ public:
 
 protected:
   void advertiseTopics();
+  void advertiseServices();
   void getParametersFromROS();
 
   void imageCallback(const sensor_msgs::ImageConstPtr& msg);
@@ -34,6 +38,15 @@ protected:
 
   void convertORBSLAMPoseToEigen(const cv::Mat& T_cv, Eigen::Affine3d& T);
 
+  bool resetService(orbslam2_ros_msgs::Reset::Request &req,
+                    orbslam2_ros_msgs::Reset::Response &res);
+
+  bool switchModeService(orbslam2_ros_msgs::SwitchMode::Request &req,
+                         orbslam2_ros_msgs::SwitchMode::Response &res);
+
+  bool saveTrajectoryService(orbslam2_ros_msgs::SaveTrajectory::Request &req,
+                             orbslam2_ros_msgs::SaveTrajectory::Response &res);
+
   ros::NodeHandle _nh;
   ros::NodeHandle _nh_private;
 
@@ -42,6 +55,11 @@ protected:
   ros::Timer _tf_timer;
 
   Eigen::Affine3d _camera_T_world;
+
+  // Services
+  ros::ServiceServer _reset_srv;
+  ros::ServiceServer _switch_mode_srv;
+  ros::ServiceServer _save_trajectory_srv;
 
   // Parameters
   std::string _vocabulary_file_path;

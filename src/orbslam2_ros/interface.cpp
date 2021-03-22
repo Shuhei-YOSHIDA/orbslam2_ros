@@ -18,6 +18,7 @@ ORBSLAM2Interface::ORBSLAM2Interface(const ros::NodeHandle& nh,
 {
   // initialize
   advertiseTopics();
+  advertiseServices();
   getParametersFromROS();
 }
 
@@ -28,6 +29,17 @@ void ORBSLAM2Interface::advertiseTopics()
   // Creating a callback time for TF publisher
   _tf_timer = _nh.createTimer(ros::Duration(0.01),
                               &ORBSLAM2Interface::publishCurrentPoseAsTF, this);
+
+  // Add extra topics rather than ethz-asl/orb_slam_2_ros
+}
+
+void ORBSLAM2Interface::advertiseServices()
+{
+  _reset_srv = _nh_private.advertiseService("reset", &ORBSLAM2Interface::resetService, this);
+  _switch_mode_srv = _nh_private.advertiseService(
+      "switch_mode", &ORBSLAM2Interface::switchModeService, this);
+  _save_trajectory_srv = _nh_private.advertiseService(
+      "save_trajectory_or_kf", &ORBSLAM2Interface::saveTrajectoryService, this);
 }
 
 void ORBSLAM2Interface::getParametersFromROS()
@@ -100,6 +112,60 @@ void ORBSLAM2Interface::convertORBSLAMPoseToEigen(const cv::Mat& T_cv,
   Eigen::Translation<double, 3> trans(t);
   Eigen::Affine3d iso = trans * R;
   T = iso;
+}
+
+bool ORBSLAM2Interface::resetService(orbslam2_ros_msgs::Reset::Request &req,
+                                     orbslam2_ros_msgs::Reset::Response &res)
+{
+  _slam_system->Reset();
+  ROS_INFO("ORB_SLAM2 Reset function is called, and the map is cleared.");
+  return true;
+}
+
+bool ORBSLAM2Interface::switchModeService(orbslam2_ros_msgs::SwitchMode::Request &req,
+                                          orbslam2_ros_msgs::SwitchMode::Response &res)
+{
+  if (req.is_localization)
+  {
+    _slam_system->ActivateLocalizationMode();
+    ROS_INFO("ORB_SLAM2 ActivateLocalizationMode function is called, and localization mode starts");
+  }
+  else
+  {
+    _slam_system->DeactivateLocalizationMode();
+    ROS_INFO("ORB_SLAM2 DeactivateLocalizationMode function is called, and mapping mode starts");
+  }
+  return true;
+}
+
+bool ORBSLAM2Interface::saveTrajectoryService(orbslam2_ros_msgs::SaveTrajectory::Request &req,
+                                              orbslam2_ros_msgs::SaveTrajectory::Response &res)
+{
+  ROS_INFO("ORB_SLAM2 shutdown function is called, for saving trajectorys");
+  _slam_system->Shutdown();
+
+  auto stamp = ros::WallTime::now();
+  string filename_postfix = to_string(stamp.toNSec());
+  if (_sensor_type == ORB_SLAM2::System::eSensor::MONOCULAR)
+  {
+    res.trajectory_file_path = ""; // empty
+    res.keyframe_file_path = req.directory_path + "/kf_" + filename_postfix;
+    _slam_system->SaveKeyFrameTrajectoryTUM(res.keyframe_file_path);
+    ROS_INFO("Sensor type is monocular, only SaveKeyFrameTrajectoryTUM is called");
+  }
+  else
+  {
+    res.trajectory_file_path = req.directory_path + "/traj_" + filename_postfix;
+    res.keyframe_file_path = req.directory_path + "/kf_" + filename_postfix;
+    _slam_system->SaveTrajectoryTUM(res.trajectory_file_path);
+    _slam_system->SaveKeyFrameTrajectoryTUM(res.keyframe_file_path);
+    ROS_INFO("Sensor type is no t monocular, both SaveTrajectoryTUM and SaveKeyFrameTrajectoryTUM are called");
+  }
+  ROS_INFO_STREAM("saved filepath is:" << res);
+
+  /// @todo _slam_system should be respawn?
+
+  return true;
 }
 
 } // namespace orbslam2_ros
