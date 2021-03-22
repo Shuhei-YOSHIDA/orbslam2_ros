@@ -57,6 +57,7 @@
   <depend>tf2_ros</depend>
   <depend>eigen_conversions</depend>
   <depend>message_filter</depend>
+  <depend>orbslam2_ros_msgs</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

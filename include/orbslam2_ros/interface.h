@@ -11,6 +11,10 @@
 #include <ORB_SLAM2/System.h>
 #include <Eigen/Dense>
 #include <opencv2/core/core.hpp>
+#include "orbslam2_ros_msgs/ORBSLAM2State.h"
+#include "orbslam2_ros_msgs/Reset.h"
+#include "orbslam2_ros_msgs/SwitchMode.h"
+#include "orbslam2_ros_msgs/SaveTrajectory.h"
 
 
 namespace orbslam2_ros
@@ -20,18 +24,31 @@ class ORBSLAM2Interface
 {
 public:
   ORBSLAM2Interface(const ros::NodeHandle& nh,
-                    const ros::NodeHandle& nh_private);
+                    const ros::NodeHandle& nh_private,
+                    ORB_SLAM2::System::eSensor sensor_type);
 
 protected:
   void advertiseTopics();
+  void advertiseServices();
   void getParametersFromROS();
 
   void imageCallback(const sensor_msgs::ImageConstPtr& msg);
+  // Call in imageCallback, after Tracking method.
+  void publishState();
 
   void publishCurrentPose(const Eigen::Affine3d& T, const std_msgs::Header& header);
   void publishCurrentPoseAsTF(const ros::TimerEvent& event);
 
   void convertORBSLAMPoseToEigen(const cv::Mat& T_cv, Eigen::Affine3d& T);
+
+  bool resetService(orbslam2_ros_msgs::Reset::Request &req,
+                    orbslam2_ros_msgs::Reset::Response &res);
+
+  bool switchModeService(orbslam2_ros_msgs::SwitchMode::Request &req,
+                         orbslam2_ros_msgs::SwitchMode::Response &res);
+
+  bool saveTrajectoryService(orbslam2_ros_msgs::SaveTrajectory::Request &req,
+                             orbslam2_ros_msgs::SaveTrajectory::Response &res);
 
   ros::NodeHandle _nh;
   ros::NodeHandle _nh_private;
@@ -40,7 +57,14 @@ protected:
   tf2_ros::TransformBroadcaster _tf_broadcaster;
   ros::Timer _tf_timer;
 
+  ros::Publisher  _states_pub;
+
   Eigen::Affine3d _camera_T_world;
+
+  // Services
+  ros::ServiceServer _reset_srv;
+  ros::ServiceServer _switch_mode_srv;
+  ros::ServiceServer _save_trajectory_srv;
 
   // Parameters
   std::string _vocabulary_file_path;
@@ -51,6 +75,8 @@ protected:
 
   // The ORB_SLAM2 system
   std::shared_ptr<ORB_SLAM2::System> _slam_system;
+
+  const ORB_SLAM2::System::eSensor _sensor_type;
 };
 
 }

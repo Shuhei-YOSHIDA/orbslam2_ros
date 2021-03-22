@@ -9,6 +9,37 @@ In addition, set environment variable by adding a code into your `.bashrc`.
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/ORB_SLAM2
 ```
 
+And this package depends on [orbslam2_ros_msgs](https:github.com/Shuhei-YOSHIDA/orbslam2_ros_msgs) package.
+
+## ROS API
+### Topics published
+* `~/transform_cam` : [`geometry_msgs/TransformStamped`]
+  - Transform from camera(frame_id) to map-origin(child_frame_id).
+* `~/state` : [`orbslam2_ros_msgs/ORBSLAM2State`]
+  - State of SLAM Algorithm.
+
+### Topics subscribed
+Image topics should be subcribed for SLAM.
+
+For monocular,
+* `~/camera/image_raw` : [`sensor_msgs/Image`]
+
+For stereo,
+* `~/camera/left/image_raw` : [`sensor_msgs/Image`]
+* `~/camera/right/image_raw` : [`sensor_msgs/Image`]
+
+For RGBD,
+* `~/camera/rgbd/image_raw` : [`sensor_msgs/Image`]
+* `~/camera/depth_registered/image_raw` : [`sensor_msgs/Image`]
+
+### Services advertised
+* `reset` : [`orbslam2_ros_msgs/Reset`]
+  - Generated map is reset.
+* `switch_mode` : [`orbslam2_ros_msgs/SwitchMode`]
+  - Mode of algorithm is switched to mapping mode or localization mode.
+* `save_trajectory_and_kf` : [`orbslam2_ros_msgs/SaveTrajectory`]
+  - Save camera trajectory and keyframe trajectory into specified directory path.
+
 ## Sample for mono-camera
 You can try mono-camera SLAM of this package by using a launch file;`freiburg1_xyz.launch`.
 * Download rosbag of TUM dataset 'fr1/xyz' from [here](https://vision.in.tum.de/data/datasets/rgbd-dataset/download#)
