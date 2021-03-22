@@ -75,6 +75,7 @@ void ORBSLAM2InterfaceRGBD::rgbdImageCallback(
     _camera_T_world = T_W_C;
   }
 
+  publishState();
 }
 
 } // namespace orgbslam2_ros

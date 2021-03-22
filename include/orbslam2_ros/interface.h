@@ -11,6 +11,7 @@
 #include <ORB_SLAM2/System.h>
 #include <Eigen/Dense>
 #include <opencv2/core/core.hpp>
+#include "orbslam2_ros_msgs/ORBSLAM2State.h"
 #include "orbslam2_ros_msgs/Reset.h"
 #include "orbslam2_ros_msgs/SwitchMode.h"
 #include "orbslam2_ros_msgs/SaveTrajectory.h"
@@ -32,6 +33,8 @@ protected:
   void getParametersFromROS();
 
   void imageCallback(const sensor_msgs::ImageConstPtr& msg);
+  // Call in imageCallback, after Tracking method.
+  void publishState();
 
   void publishCurrentPose(const Eigen::Affine3d& T, const std_msgs::Header& header);
   void publishCurrentPoseAsTF(const ros::TimerEvent& event);
@@ -53,6 +56,8 @@ protected:
   ros::Publisher _trans_pub;
   tf2_ros::TransformBroadcaster _tf_broadcaster;
   ros::Timer _tf_timer;
+
+  ros::Publisher  _states_pub;
 
   Eigen::Affine3d _camera_T_world;
 

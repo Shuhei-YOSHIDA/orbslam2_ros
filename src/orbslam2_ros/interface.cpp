@@ -31,6 +31,7 @@ void ORBSLAM2Interface::advertiseTopics()
                               &ORBSLAM2Interface::publishCurrentPoseAsTF, this);
 
   // Add extra topics rather than ethz-asl/orb_slam_2_ros
+  _states_pub = _nh_private.advertise<orbslam2_ros_msgs::ORBSLAM2State>("state", 1);
 }
 
 void ORBSLAM2Interface::advertiseServices()
@@ -70,6 +71,17 @@ void ORBSLAM2Interface::getParametersFromROS()
 //{
 
 //}
+
+void ORBSLAM2Interface::publishState()
+{
+  orbslam2_ros_msgs::ORBSLAM2State msg;
+  msg.header.stamp = ros::Time::now();
+
+  msg.is_changed = _slam_system->MapChanged();
+  msg.tracking_state = (int8_t)_slam_system->GetTrackingState();
+
+  _states_pub.publish(msg);
+}
 
 void ORBSLAM2Interface::publishCurrentPose(const Eigen::Affine3d& T,
                                            const std_msgs::Header& header)

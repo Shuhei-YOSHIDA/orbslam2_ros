@@ -20,6 +20,7 @@ ORBSLAM2InterfaceMono::ORBSLAM2InterfaceMono(
   _slam_system = std::shared_ptr<ORB_SLAM2::System>(
         new ORB_SLAM2::System(_vocabulary_file_path, _setting_file_path,
                               _sensor_type, visualization));
+  ROS_INFO("ORB_SLAM2::System is loaded");
 }
 
 void ORBSLAM2InterfaceMono::subscribeToTopics()
@@ -52,6 +53,8 @@ void ORBSLAM2InterfaceMono::imageCallback(const sensor_msgs::ImageConstPtr& msg)
     publishCurrentPose(T_W_C, msg->header); ///@note from camera to world?
     _camera_T_world = T_W_C;
   }
+
+  publishState();
 }
 
 } // namespace orbslam2_ros
